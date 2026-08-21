@@ -19,7 +19,7 @@ A digital photo frame capable of displaying images via an RSS/XML feed.
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/kodak-frame.git
+git clone https://github.com/Dgiego38/Kodak-Connected-Frame-Project.git
 cd kodak-frame
 ```
 
