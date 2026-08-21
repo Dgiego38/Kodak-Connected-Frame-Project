@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Flux Kodak Local</title>
+    <link>http://192.168.1.3:8000/</link>
+    <description>Météo paris</description>
+    <ttl>3</ttl>
+    <item>
+      <title>Météo paris</title>
+      <link>http://192.168.1.3:8000/weather_205024.jpg</link>
+      <guid isPermaLink="false">weather_205024.jpg</guid>
+      <pubDate>Thu, 20 Aug 2026 20:50:26 +0200</pubDate>
+      <enclosure url="http://192.168.1.3:8000/weather_205024.jpg" type="image/jpeg" length="102400" />
+      <media:content url="http://192.168.1.3:8000/weather_205024.jpg" type="image/jpeg" />
+    </item>
+  </channel>
+</rss>

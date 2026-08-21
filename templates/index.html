@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kodak Control</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+    <header>
+        <h1 id="page-title">Général</h1>
+    </header>
+
+    <div class="container">
+        
+        <!-- ONGLET 1 : GÉNÉRAL -->
+        <div id="view-general" class="view active">
+            <div class="section-title">Mode d'affichage</div>
+            <div class="grid-modes">
+                <div class="mode-card" data-mode="meteo" onclick="selectMode('meteo')">
+                    <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                    <span>Météo</span>
+                </div>
+                <div class="mode-card" data-mode="carrousel" onclick="selectMode('carrousel')">
+                    <svg viewBox="0 0 24 24"><path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H9l2-3zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z"/></svg>
+                    <span>Carrousel</span>
+                </div>
+                <div class="mode-card" data-mode="actualites" onclick="selectMode('actualites')">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span>Actualités</span>
+                </div>
+                <div class="mode-card" data-mode="note" onclick="selectMode('note')">
+                    <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    <span>Note</span>
+                </div>
+            </div>
+
+            <div class="section-title">Éditer la note</div>
+            <div class="input-card">
+                <textarea id="note-input" placeholder="Écrivez votre message ici..."></textarea>
+                <button class="btn-primary" onclick="saveNote()">Enregistrer la note</button>
+            </div>
+        </div>
+
+        <!-- ONGLET 2 : VISUALISATION -->
+        <div id="view-preview" class="view">
+            <div class="section-title">Aperçu en direct du cadre</div>
+            <div class="preview-container">
+                <img id="preview-img" src="/preview.jpg" alt="Aperçu Kodak" onerror="this.src='https://via.placeholder.com/800x480?text=Génération+en+cours...'">
+            </div>
+            <button class="btn-primary" style="margin-top: 16px;" onclick="refreshPreview()">Rafraîchir l'aperçu</button>
+        </div>
+
+        <!-- ONGLET 3 : PHOTOS -->
+        <div id="view-photos" class="view">
+            <div class="section-title">Ajouter une photo</div>
+            <div class="upload-box" onclick="document.getElementById('file-input').click()">
+                <svg style="width:32px;height:32px;fill:var(--text-sub)" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                <p>Appuyez pour téléverser une image</p>
+                <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="uploadPhoto(this)">
+            </div>
+
+            <div class="section-title">Photos du carrousel</div>
+            <div id="photo-grid" class="photo-grid"></div>
+        </div>
+
+    </div>
+
+    <!-- BARRE DE NAVIGATION (TABS) -->
+    <nav class="tab-bar">
+        <button class="tab-button active" onclick="switchTab('general', 'Général', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Général
+        </button>
+        <button class="tab-button" onclick="switchTab('preview', 'Visualisation', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            Aperçu
+        </button>
+        <button class="tab-button" onclick="switchTab('photos', 'Photos', this)">
+            <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            Photos
+        </button>
+    </nav>
+
+    <script>
+        function switchTab(viewId, title, btnElement) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('view-' + viewId).classList.add('active');
+            btnElement.classList.add('active');
+            document.getElementById('page-title').innerText = title;
+
+            if (viewId === 'preview') refreshPreview();
+            if (viewId === 'photos') loadPhotos();
+        }
+
+        async function fetchStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+
+                document.querySelectorAll('.mode-card').forEach(card => {
+                    card.classList.toggle('active', card.dataset.mode === data.mode);
+                });
+
+                document.getElementById('note-input').value = data.note_text || '';
+            } catch (err) {
+                console.error("Erreur statut :", err);
+            }
+        }
+
+        async function selectMode(mode) {
+            document.querySelectorAll('.mode-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.mode === mode);
+            });
+
+            await fetch('/api/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: mode })
+            });
+        }
+
+        async function saveNote() {
+            const text = document.getElementById('note-input').value;
+            await fetch('/api/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ note_text: text, mode: 'note' })
+            });
+            selectMode('note');
+            alert('Note enregistrée et activée !');
+        }
+
+        function refreshPreview() {
+            const img = document.getElementById('preview-img');
+            img.src = '/preview.jpg?t=' + new Date().getTime();
+        }
+
+        async function loadPhotos() {
+            const res = await fetch('/api/status');
+            const data = await res.json();
+            const grid = document.getElementById('photo-grid');
+            grid.innerHTML = '';
+
+            data.photos.forEach(filename => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                item.innerHTML = `
+                    <img src="/photos/${filename}" alt="${filename}">
+                    <button class="btn-delete" onclick="deletePhoto('${filename}')">&times;</button>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        async function uploadPhoto(input) {
+            if (!input.files || !input.files[0]) return;
+            
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            input.value = '';
+            loadPhotos();
+        }
+
+        async function deletePhoto(filename) {
+            if (!confirm(`Supprimer la photo "${filename}" ?`)) return;
+
+            await fetch('/api/delete-photo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: filename })
+            });
+
+            loadPhotos();
+        }
+
+        fetchStatus();
+    </script>
+</body>
+</html>

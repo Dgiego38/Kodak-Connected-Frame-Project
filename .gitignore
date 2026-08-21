@@ -1,0 +1,19 @@
+# Environnement virtuel et dépendances
+venv/
+__pycache__/
+*.pyc
+
+# Fichiers de configuration / données sensibles
+note.txt
+.env
+
+# Images temporaires et dossiers de médias locaux
+/photos/*
+!/photos/.gitkeep
+/meteo/*
+!/meteo/.gitkeep
+weather_*.jpg
+display_*.jpg
+note_*.jpg
+carrousel_*.jpg
+meteo_*.jpg
