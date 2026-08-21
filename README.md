@@ -20,7 +20,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Dgiego38/Kodak-Connected-Frame-Project.git
-cd kodak-frame
+cd Kodak-Connected-Frame-Project
 ```
 
 Install dependencies:
