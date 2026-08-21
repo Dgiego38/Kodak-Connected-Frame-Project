@@ -18,32 +18,32 @@ A digital photo frame capable of displaying images via an RSS/XML feed.
 📦 Installation
 Clone the repository:
 
-Bash
+```bash
 git clone https://github.com/yourusername/kodak-frame.git
 cd kodak-frame
-Install dependencies:
-It is recommended to install the required libraries using the provided requirements.txt:
+```
 
-Bash
-python -m pip install -r requirements.txt
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
 ⚙️ Configuration
 Before running the project for the first time, you must configure your local environment (IP address, location, etc.). Run the setup script:
 
-Bash
+```bash
 python setup.py
-City: Enter your city name (e.g., Strasbourg).
-
-Footer: Enter your name to appear at the bottom of the weather images.
-
-Server IP: The script will automatically detect your local IP. Press Enter to confirm or type a specific one if needed.
+```
 
 The script will automatically update app.py, module_meteo.py, and feed.xml with your specific settings.
 
 🚀 Usage
 To start the server and begin generating the image feeds, run:
 
-Bash
+```bash
 python app.py
+```
+
 Once running, your frame can pull the data from your local server using the URL: http://<YOUR_IP>:8000/feed.xml.
 
 📂 Project Structure
@@ -63,5 +63,4 @@ feed.xml: The RSS template your frame uses to find the images.
 This project is for personal use. Feel free to modify and expand upon it!
 
 Created by Diego Grenados
-# Kodak-Connected-Frame-Project
-Kodak Connected Frame Project
+
